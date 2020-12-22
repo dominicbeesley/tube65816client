@@ -1,0 +1,42 @@
+
+
+EMUlation mode BRK handler
+==========================
+
+As the EMU mode BRK handler doesn't (and cannot) know the bank in which the error occurred
+case must be taken when running EMUlation mode code in banks other than 0.
+
+Either:
+  - Don't run EMU code in banks other than bank 0
+  - Install a BRK handler in bank 0 that knows which bank the current code is running from
+
+BRK Handler Program Bank
+========================
+The native BRK handler sets an extra bank register at &FC(TBC) to indicate the bank in which 
+the error occurred, the emulation mode BRK handler assumes bank 0 and clears this. This can
+be used in conjunction with the regular FE/FD pointer to find the BRK instruction
+
+
+Code run
+========
+TODO: have method of flagging native code?
+All code is entered in EMUlation mode. Code that is to run from banks other than 0 should
+either install a suitable BRK handler immediately or switch to native mode.
+
+
+
+OSWORD 0 
+========
+
+The pointer at 0..1 is 16 bits and so has to be in bank0!
+
+
+Interrupt Handlers in EMU mode
+==============================
+
+- These will probably crash if the databank is not 0 TODO: look at this and come up with test cases
+
+Direct Page
+===========
+
+Todo: all entry points and interrupt handlers need to reset/restore DP
